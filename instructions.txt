@@ -1,0 +1,8 @@
+Prototype 1
+Write a React component that displays a list of Pokémon retrieved from (GET https://pokeapi.co/api/v2/pokemon) [https://pokeapi.co/docs/v2.html#pokemon]. Add a back and forward button to navigate through the list of pokemon using the `next` and `previous` properties. 
+
+Prototype 2
+Extend the pokemon page such that each Pokémon should be a hyperlink to a page which displays their front_default sprite, the name of the pokemon, and the names of the abilities that it can learn. The page should also display a button to navigate back to the list page, preserving where the user left off.
+
+For creating a list component
+For creating a list component + pokemon page
