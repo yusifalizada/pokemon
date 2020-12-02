@@ -12,10 +12,14 @@ code {
     monospace;
 }
 
-button {
-  margin: 10px;
+button {
+  margin: 10px 10px 0 0; 
 }
 
-.pokemon-list {
-  margin: 10px;
+.pokemon-list {
+  margin: 15px;
+}
+
+.pokemon {
+  margin-bottom: 3px;
 }
