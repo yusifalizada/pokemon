@@ -23,3 +23,12 @@ button {
 .pokemon {
   margin-bottom: 3px;
 }
+
+.stripe {
+  display: flex;
+  align-items:center;
+}
+
+.profile {
+  margin: 10px;
+}

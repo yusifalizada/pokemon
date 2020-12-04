@@ -52,15 +52,64 @@ class App extends React.PureComponent {
 class Pokemon extends React.Component {
   render() {
     const profile = this.props;
+    const profileUrl = profile.url;
+    const splittedUrl = profileUrl.split("/");
+    const profileId = splittedUrl[splittedUrl.length - 2];
 
     return (
       <div className="pokemon">
-        <a href={profile.url}>
-          {profile.name}
-        </a>
+        <a href={"/profile/" + profileId}>{profile.name}</a>
       </div>
     );
   }
 }
 
-export default App;
+class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+    this.Profile();
+  }
+
+  Profile = async props => {
+    const profile = (
+      await get(
+        `https://pokeapi.co/api/v2/pokemon/${this.props.match.params.id}`
+      )
+    ).body; // error check
+    console.log("prfile");
+    console.log(profile);
+
+    // note: could be done at 'render' stage as well - but since abilities were simpler to handle here,
+    // added the rest as well
+    this.setState({
+      name: <span>Name: {profile.name}</span>,
+      frontDefaultStripe: (
+        <div className="stripe">
+          <span> Front Default Stripe: </span>
+          <img alt="pokemon" src={profile.sprites.front_default} />
+        </div>
+      ),
+      abilities: profile.abilities.map(abilities => (
+        <li>{abilities.ability.name}</li>
+      )) //assuming at least 1 ability
+    });
+  };
+
+  render() {
+    return (
+      <div className="profile">
+        {this.state.name}
+        {this.state.frontDefaultStripe}
+        <span>Abilities:</span>
+        {this.state.abilities}
+      </div>
+    );
+  }
+}
+
+export default { App, Profile };
