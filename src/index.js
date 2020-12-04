@@ -9,6 +9,7 @@ const routes = (
   <Router>
     <Switch>
       <Route path="/profile/:id" component={App.Profile}></Route>
+      <Route path="/page/:id" component={App.App}></Route>
       <Route path="/" component={App.App}></Route>
     </Switch>
   </Router>

@@ -12,8 +12,17 @@ code {
     monospace;
 }
 
-button {
+.btn {
   margin: 10px 10px 0 0; 
+  font-weight: 600;
+  text-decoration: none;
+  color: black;
+  display: inline-block;
+  width: fit-content;
+  border-radius: 5px;
+  background-image: linear-gradient(white, grey);
+  font-size: 0.8em;
+  padding: 3px;
 }
 
 .pokemon-list {

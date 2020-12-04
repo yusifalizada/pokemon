@@ -9,7 +9,14 @@ class App extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = { page: 0 };
+
+    const page =
+      props && props.match && props.match.params && props.match.params.id
+        ? parseInt(props.match.params.id) // ts would be handy here
+        : 0;
+
+    this.state = { page };
+    console.log(this.state);
   }
 
   PokemonList = async props => {
@@ -20,6 +27,7 @@ class App extends React.PureComponent {
           20}&limit=20`
       )
     ).body.results; //TODO: error check, try/catch
+    console.log(this.state);
 
     this.setState({
       PokemonList: list.map(profile => <Pokemon {...profile} />)
@@ -27,23 +35,34 @@ class App extends React.PureComponent {
   };
 
   nextPage = () => {
-    this.setState({ page: this.state.page + 1 });
+    this.setState({ page: parseInt(this.state.page) + 1 }); // ts would be handy here
     this.PokemonList();
   };
 
   prevPage = () => {
     if (this.state.page > 0) {
-      this.setState({ page: this.state.page - 1 });
+      this.setState({ page: parseInt(this.state.page) - 1 });
       this.PokemonList();
     }
   };
 
   render() {
+    console.log(this.state);
     return (
+      // TODO: next/prev could be greyed out if unavailable
       <div className="pokemon-list">
         {this.state.PokemonList}
-        <button onClick={this.prevPage}>Prev</button>
-        <button onClick={this.nextPage}>Next</button>
+        <a
+          className="btn"
+          href={`/page/${
+            this.state.page > 0 ? this.state.page - 1 : this.state.page
+          }`}
+        >
+          Prev
+        </a>
+        <a className="btn" href={`/page/${this.state.page + 1}`}>
+          Next
+        </a>
       </div>
     );
   }
@@ -87,6 +106,7 @@ class Profile extends React.Component {
     // note: could be done at 'render' stage as well - but since abilities were simpler to handle here,
     // added the rest as well
     this.setState({
+      id: profile.id,
       name: <span>Name: {profile.name}</span>,
       frontDefaultStripe: (
         <div className="stripe">
@@ -100,6 +120,12 @@ class Profile extends React.Component {
     });
   };
 
+  goBack = () => {
+    this.setState({ page: this.state.id / 20 });
+    window.location.href = '...';
+  };
+
+  //note: assuming id structure always starts from 1 and increments by 1 for the next pokemon for pagination
   render() {
     return (
       <div className="profile">
@@ -107,6 +133,7 @@ class Profile extends React.Component {
         {this.state.frontDefaultStripe}
         <span>Abilities:</span>
         {this.state.abilities}
+        <a href={`/page/${Math.floor(this.state.id/20)}`}>Back</a>
       </div>
     );
   }
