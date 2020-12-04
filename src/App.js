@@ -16,7 +16,6 @@ class App extends React.PureComponent {
         : 0;
 
     this.state = { page };
-    console.log(this.state);
   }
 
   PokemonList = async props => {
@@ -27,27 +26,13 @@ class App extends React.PureComponent {
           20}&limit=20`
       )
     ).body.results; //TODO: error check, try/catch
-    console.log(this.state);
 
     this.setState({
       PokemonList: list.map(profile => <Pokemon {...profile} />)
     });
   };
 
-  nextPage = () => {
-    this.setState({ page: parseInt(this.state.page) + 1 }); // ts would be handy here
-    this.PokemonList();
-  };
-
-  prevPage = () => {
-    if (this.state.page > 0) {
-      this.setState({ page: parseInt(this.state.page) - 1 });
-      this.PokemonList();
-    }
-  };
-
   render() {
-    console.log(this.state);
     return (
       // TODO: next/prev could be greyed out if unavailable
       <div className="pokemon-list">
@@ -90,7 +75,6 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.Profile();
   }
 
@@ -100,8 +84,6 @@ class Profile extends React.Component {
         `https://pokeapi.co/api/v2/pokemon/${this.props.match.params.id}`
       )
     ).body; // error check
-    console.log("prfile");
-    console.log(profile);
 
     // note: could be done at 'render' stage as well - but since abilities were simpler to handle here,
     // added the rest as well
@@ -120,11 +102,6 @@ class Profile extends React.Component {
     });
   };
 
-  goBack = () => {
-    this.setState({ page: this.state.id / 20 });
-    window.location.href = '...';
-  };
-
   //note: assuming id structure always starts from 1 and increments by 1 for the next pokemon for pagination
   render() {
     return (
@@ -133,10 +110,10 @@ class Profile extends React.Component {
         {this.state.frontDefaultStripe}
         <span>Abilities:</span>
         {this.state.abilities}
-        <a href={`/page/${Math.floor(this.state.id/20)}`}>Back</a>
+        <a href={`/page/${Math.floor(this.state.id / 20)}`}>Back</a>
       </div>
     );
   }
 }
 
-export default { App, Profile };
+export { App, Profile };
